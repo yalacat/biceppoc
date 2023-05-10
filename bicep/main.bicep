@@ -1,7 +1,7 @@
 @description('The location into which your Azure resources should be deployed.')
 param location string = resourceGroup().location
 
-@description('Select the type of environment you want to provision. Allowed values are Production and Test.')
+@description('Select the type of environment you want to provision. Allowed values are Production and Dev.')
 @allowed([
   'prod'
   'dev'
@@ -116,8 +116,9 @@ resource customAppsVnet 'Microsoft.Network/virtualNetworks@2022-11-01' = {
   location:location
 }
 
-resource functionApp 'Microsoft.Web/sites/functions@2022-09-01'= {
+resource functionApp 'Microsoft.Web/sites@2022-09-01'= {
   name: functionAppName
+  location: location
 }
 
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {

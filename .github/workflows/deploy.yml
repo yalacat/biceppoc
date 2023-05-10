@@ -51,7 +51,7 @@ jobs:
 
   deploy:
     needs: validate
-    environment: ${{ inputs.environmentType }}
+    # environment: ${{ inputs.environmentType }}
     runs-on: ubuntu-latest
     # outputs:
     #   appServiceAppHostName: ${{ steps.deploy.outputs.appServiceAppHostName }}

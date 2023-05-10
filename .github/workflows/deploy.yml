@@ -53,8 +53,8 @@ jobs:
     needs: validate
     environment: ${{ inputs.environmentType }}
     runs-on: ubuntu-latest
-    outputs:
-      appServiceAppHostName: ${{ steps.deploy.outputs.appServiceAppHostName }}
+    # outputs:
+    #   appServiceAppHostName: ${{ steps.deploy.outputs.appServiceAppHostName }}
     steps:
     - uses: actions/checkout@v3
     - uses: azure/login@v1

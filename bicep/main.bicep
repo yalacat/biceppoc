@@ -17,10 +17,10 @@ var appServiceFrontEndAppName = 'app-fe-eus-${environmentType}-tiq-01'
 var appServiceBackEndAppName = 'app-be-eus-${environmentType}-tiq-01'
 var appServicePlanName = 'plan-customapps'
 // var apiGatewayName = 'agw-customapps'
-var azureServiceBusName = 'sb-customapps-eus-${environmentType}-tiq-01'
+// var azureServiceBusName = 'sb-customapps-eus-${environmentType}-tiq-01'
 // var customAppsVnetName = 'vnet-customapps'
-var functionAppName = 'func-customapps'
-var storageAccountName = 'steus${environmentType}'
+// var functionAppName = 'func-customapps'
+// var storageAccountName = 'steus${environmentType}'
 // var logAnalyticsWorkspaceName = 'log-${resourceNameSuffix}'
 // var applicationInsightsName = 'appi-customapps'
 
@@ -113,10 +113,10 @@ resource appServiceBackEndApp 'Microsoft.Web/sites@2022-09-01' = {
 // }
 // }
 
-resource serviceBus 'Microsoft.ServiceBus/namespaces@2021-11-01'= {
-  name: azureServiceBusName
-  location: location
-}
+// resource serviceBus 'Microsoft.ServiceBus/namespaces@2021-11-01'= {
+//   name: azureServiceBusName
+//   location: location
+// }
 
 // resource customAppsVnet 'Microsoft.Network/virtualNetworks@2022-11-01' = {
 //   name: customAppsVnetName
@@ -138,10 +138,10 @@ resource serviceBus 'Microsoft.ServiceBus/namespaces@2021-11-01'= {
 //   }
 // }
 
-resource functionApp 'Microsoft.Web/sites@2022-09-01'= {
-  name: functionAppName
-  location: location
-}
+// resource functionApp 'Microsoft.Web/sites@2022-09-01'={
+//   name: functionAppName
+//   location: location
+// }
 
 // resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
 //   name: logAnalyticsWorkspaceName
@@ -160,11 +160,11 @@ resource functionApp 'Microsoft.Web/sites@2022-09-01'= {
 //   }
 // }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
-  name: storageAccountName
-  location: location
-  kind: 'StorageV2'
-  sku: environmentConfigurationMap[environmentType].storageAccount.sku
-}
+// resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
+//   name: storageAccountName
+//   location: location
+//   kind: 'StorageV2'
+//   sku: environmentConfigurationMap[environmentType].storageAccount.sku
+// }
 
 //output appServiceAppHostName string = appServiceApp.properties.defaultHostName

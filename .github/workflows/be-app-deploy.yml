@@ -50,6 +50,7 @@ jobs:
       with:
         node-version: ${{ inputs.NODE_VERSION }}
         cache: 'npm'
+        cache-dependency-path: be-app/package-lock.json
 
     - name: npm install, build, and test
       run: |

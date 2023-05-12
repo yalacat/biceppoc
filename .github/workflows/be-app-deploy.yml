@@ -2,7 +2,7 @@ name: be-app-deploy
 
 on:
   workflow_call:
-   inputs:
+    inputs:
       environmentType:
         required: true
         type: string
@@ -33,7 +33,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
      # checkout the repo
     - name: 'Checkout GitHub Action' 

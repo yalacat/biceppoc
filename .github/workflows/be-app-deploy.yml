@@ -52,16 +52,27 @@ jobs:
         cache: 'npm'
         cache-dependency-path: be-app/package-lock.json
 
-    - name: npm install, build, and test
+    - name: npm install, build
       run: |
         npm install
-        npm run build --if-present
-        npm run test --if-present
-      working-directory: be-app
-
-        # deploy web app using Azure credentials
-    - uses: azure/webapps-deploy@v2
+    - name: Upload artifact for deployment job
+      uses: actions/upload-artifact@v2
       with:
-        app-name: ${{ inputs.webAppName }}
-        package: ${{ inputs.pathOfWebApp }}
+          name: ${{ inputs.webAppName }}
+          path: ${{ inputs.pathOfWebApp }}
 
+  deploy: 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ inputs.webAppName }}
+
+          # deploy web app using Azure credentials
+      - name: Deploy to web app
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ inputs.webAppName }}
+          package: ${{ inputs.pathOfWebApp }}

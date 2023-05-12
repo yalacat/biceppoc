@@ -21,8 +21,8 @@ var azureServiceBusName = 'sb-customapps-eus-${environmentType}-tiq-01'
 // var customAppsVnetName = 'vnet-customapps'
 var functionAppName = 'func-customapps'
 var storageAccountName = 'steus${environmentType}'
-var logAnalyticsWorkspaceName = 'log-${resourceNameSuffix}'
-var applicationInsightsName = 'appi-customapps'
+// var logAnalyticsWorkspaceName = 'log-${resourceNameSuffix}'
+// var applicationInsightsName = 'appi-customapps'
 
 // Define the SKUs for each component based on the environment type.
 var environmentConfigurationMap = {
@@ -86,18 +86,18 @@ resource appServiceBackEndApp 'Microsoft.Web/sites@2022-09-01' = {
   properties: {
     serverFarmId: appServicePlan.id
     httpsOnly: true
-    siteConfig: {
-      appSettings: [
-        {
-          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-          value: applicationInsights.properties.InstrumentationKey
-        }
-        {
-          name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-          value: applicationInsights.properties.ConnectionString
-        }       
-      ]
-    }
+    // siteConfig: {
+    //   appSettings: [
+    //     {
+    //       name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+    //       value: applicationInsights.properties.InstrumentationKey
+    //     }
+    //     {
+    //       name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+    //       value: applicationInsights.properties.ConnectionString
+    //     }       
+    //   ]
+    // }
   }
 }
 
@@ -143,22 +143,22 @@ resource functionApp 'Microsoft.Web/sites@2022-09-01'= {
   location: location
 }
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
-  name: logAnalyticsWorkspaceName
-  location: location
-}
+// resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
+//   name: logAnalyticsWorkspaceName
+//   location: location
+// }
 
-resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
-  name: applicationInsightsName
-  location: location
-  kind: 'web'
-  properties: {
-    Application_Type: 'web'
-    Request_Source: 'rest'
-    Flow_Type: 'Bluefield'
-    WorkspaceResourceId: logAnalyticsWorkspace.id
-  }
-}
+// resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
+//   name: applicationInsightsName
+//   location: location
+//   kind: 'web'
+//   properties: {
+//     Application_Type: 'web'
+//     Request_Source: 'rest'
+//     Flow_Type: 'Bluefield'
+//     WorkspaceResourceId: logAnalyticsWorkspace.id
+//   }
+// }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: storageAccountName

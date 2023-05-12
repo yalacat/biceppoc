@@ -8,9 +8,9 @@ param location string = resourceGroup().location
 ])
 param environmentType string
 
-@description('A unique suffix to add to resource names that need to be globally unique.')
-@maxLength(13)
-param resourceNameSuffix string = uniqueString(resourceGroup().id)
+// @description('A unique suffix to add to resource names that need to be globally unique.')
+// @maxLength(13)
+// param resourceNameSuffix string = uniqueString(resourceGroup().id)
 
 // Define the names for resources.
 var appServiceFrontEndAppName = 'app-fe-eus-${environmentType}-tiq-01'

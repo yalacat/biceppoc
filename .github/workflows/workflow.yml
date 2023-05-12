@@ -30,6 +30,20 @@ jobs:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+  deploy-be-app:
+    uses: ./.github/workflows/be-app-deploy.yml
+    needs: deploy-test
+    with:
+      environmentType: dev
+      resourceGroupName: sub-nprd-customapps-01
+      nodeVersion: 18.16.0
+      webAppName: be-app
+      pathOfWebApp: .
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
   # Deploy to the production environment.
   # deploy-production:
   #   uses: ./.github/workflows/deploy.yml

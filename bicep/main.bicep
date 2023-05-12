@@ -26,7 +26,7 @@ var applicationInsightsName = 'appi-customapps'
 
 // Define the SKUs for each component based on the environment type.
 var environmentConfigurationMap = {
-  Production: {
+  prod: {
     appServicePlan: {
       sku: {
         name: 'S1'
@@ -39,7 +39,7 @@ var environmentConfigurationMap = {
       }
     }
   }
-  Dev: {
+  dev: {
     appServicePlan: {
       sku: {
         name: 'F1'

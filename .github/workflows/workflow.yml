@@ -30,6 +30,7 @@ jobs:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+# deploy the backend nodejs app
   deploy-be-app:
     uses: ./.github/workflows/be-app-deploy.yml
     needs: deploy-test

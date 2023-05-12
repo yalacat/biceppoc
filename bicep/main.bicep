@@ -16,11 +16,11 @@ param resourceNameSuffix string = uniqueString(resourceGroup().id)
 var appServiceFrontEndAppName = 'app-fe-eus-${environmentType}-tiq-01'
 var appServiceBackEndAppName = 'app-be-eus-${environmentType}-tiq-01'
 var appServicePlanName = 'plan-customapps'
-var apiGatewayName = 'agw-customapps'
+// var apiGatewayName = 'agw-customapps'
 var azureServiceBusName = 'sb-customapps-eus-${environmentType}-tiq-01'
-var customAppsVnetName = 'vnet-customapps'
+// var customAppsVnetName = 'vnet-customapps'
 var functionAppName = 'func-customapps'
-var storageAccountName = 'st-eus-${environmentType}'
+var storageAccountName = 'steus${environmentType}'
 var logAnalyticsWorkspaceName = 'log-${resourceNameSuffix}'
 var applicationInsightsName = 'appi-customapps'
 
@@ -101,42 +101,42 @@ resource appServiceBackEndApp 'Microsoft.Web/sites@2022-09-01' = {
   }
 }
 
-resource apiGateway 'Microsoft.Network/applicationGateways@2022-11-01'= {
-  name: apiGatewayName
-  location:location
-  properties: {
-    sku: {
-      capacity: 1
-      name: 'Standard_Small'
-      tier: 'Standard'
-    }
-}
-}
+// resource apiGateway 'Microsoft.Network/applicationGateways@2022-11-01'= {
+//   name: apiGatewayName
+//   location:location
+//   properties: {
+//     sku: {
+//       capacity: 1
+//       name: 'Standard_Small'
+//       tier: 'Standard'
+//     }
+// }
+// }
 
 resource serviceBus 'Microsoft.ServiceBus/namespaces@2021-11-01'= {
   name: azureServiceBusName
   location: location
 }
 
-resource customAppsVnet 'Microsoft.Network/virtualNetworks@2022-11-01' = {
-  name: customAppsVnetName
-  location:location
-  properties: {
-    addressSpace: {
-      addressPrefixes: [
-        '10.0.0.0/16'
-      ]
-    }
-    subnets: [
-      {
-        name: 'backendSubnet'
-        properties: {
-          addressPrefix: '10.0.2.0/24'
-        }
-      }
-    ]
-  }
-}
+// resource customAppsVnet 'Microsoft.Network/virtualNetworks@2022-11-01' = {
+//   name: customAppsVnetName
+//   location:location
+//   properties: {
+//     addressSpace: {
+//       addressPrefixes: [
+//         '10.0.0.0/16'
+//       ]
+//     }
+//     subnets: [
+//       {
+//         name: 'backendSubnet'
+//         properties: {
+//           addressPrefix: '10.0.2.0/24'
+//         }
+//       }
+//     ]
+//   }
+// }
 
 resource functionApp 'Microsoft.Web/sites@2022-09-01'= {
   name: functionAppName

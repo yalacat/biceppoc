@@ -20,7 +20,7 @@ var apiGatewayName = 'agw-customapps'
 var azureServiceBusName = 'sb-customapps-eus-${environmentType}-tiq-01'
 var customAppsVnetName = 'vnet-customapps'
 var functionAppName = 'func-customapps'
-var storageAccountName = 'st-eus-${environmentType}-tiq-01'
+var storageAccountName = 'st-eus-${environmentType}'
 var logAnalyticsWorkspaceName = 'log-${resourceNameSuffix}'
 var applicationInsightsName = 'appi-customapps'
 
@@ -104,11 +104,13 @@ resource appServiceBackEndApp 'Microsoft.Web/sites@2022-09-01' = {
 resource apiGateway 'Microsoft.Network/applicationGateways@2022-11-01'= {
   name: apiGatewayName
   location:location
-  sku: {
-    capacity: 1
-    name: 'Standard_Small'
-    tier: 'Standard'
-  }
+  properties: {
+    sku: {
+      capacity: 1
+      name: 'Standard_Small'
+      tier: 'Standard'
+    }
+}
 }
 
 resource serviceBus 'Microsoft.ServiceBus/namespaces@2021-11-01'= {

@@ -70,9 +70,7 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
-          $profile = Get-AzWebAppPublishingProfile 
-              -ResourceGroupName ${{ inputs.resourceGroupName }}
-              -Name ${{ inputs.webAppName }}
+          $profile = Get-AzWebAppPublishingProfile -ResourceGroupName ${{ inputs.resourceGroupName }} -Name ${{ inputs.webAppName }}
           $profile = $profile.Replace("`r", "").Replace("`n", "")
           ::set-output name=publish-prof::$profile       
         azPSVersion: latest 

@@ -38,7 +38,7 @@ jobs:
       environmentType: dev
       resourceGroupName: sub-nprd-customapps-01
       nodeVersion: 18.16.0
-      webAppName: be-app
+      webAppName: app-be-eus-dev-tiq-01
       pathOfWebApp: .
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}

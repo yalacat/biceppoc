@@ -79,7 +79,7 @@ jobs:
     - name: Download artifact from build job
       uses: actions/download-artifact@v3
       with:
-        name: be-app
+        name: ${{ inputs.webAppName }}
 
         # deploy web app using Azure credentials
     - name: Run Azure webapp deploy action using publish profile credentials
@@ -87,7 +87,7 @@ jobs:
       with:
         app-name: ${{ inputs.webAppName }}
         publish-profile: ${{steps.publish-profile.outputs.pubprofile}}    
-        package: ${{ inputs.pathOfWebApp }}
+        package: .
 
   # deploy: 
   #   runs-on: ubuntu-latest

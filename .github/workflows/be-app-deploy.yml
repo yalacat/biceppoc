@@ -72,7 +72,8 @@ jobs:
         inlineScript: |
           $profile = Get-AzWebAppPublishingProfile -ResourceGroupName ${{ inputs.resourceGroupName }} -Name ${{ inputs.webAppName }}
           $profile = $profile.Replace("`r", "").Replace("`n", "")
-          ::set-output name=publish-prof::$profile       
+          Write-Output "::set-output name=pubprofile::$profile"
+          Remove-Variable profile      
         azPSVersion: latest 
 
         # deploy web app using Azure credentials
@@ -80,7 +81,7 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ inputs.webAppName }}
-        publish-profile: ${{steps.publish-profile.outputs.publish-prof}}
+        publish-profile: ${{steps.publish-profile.outputs.pubprofile}}
         images: 
      
 

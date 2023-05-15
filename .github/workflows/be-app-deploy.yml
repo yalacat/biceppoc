@@ -60,7 +60,7 @@ jobs:
       working-directory: be-app
     
     - name: Upload artifact for deployment job
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: ${{ inputs.webAppName }}
         path: .
@@ -75,6 +75,11 @@ jobs:
           Write-Output "::set-output name=pubprofile::$profile"
           Remove-Variable profile      
         azPSVersion: latest 
+
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v3
+      with:
+        name: be-app
 
         # deploy web app using Azure credentials
     - name: Run Azure webapp deploy action using publish profile credentials

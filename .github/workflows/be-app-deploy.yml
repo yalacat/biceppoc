@@ -68,8 +68,8 @@ jobs:
       id: publish-profile
       shell: pwsh
       run: |
-          $profile = Get-AzWebAppPublishingProfile `
-              -ResourceGroupName ${{ inputs.resourceGroupName }} `
+          $profile = Get-AzWebAppPublishingProfile 
+              -ResourceGroupName ${{ inputs.resourceGroupName }} 
               -Name ${{ inputs.webAppName }}
           $profile = $profile.Replace("`r", "").Replace("`n", "")
           ::set-output name=publish-prof::$profile         

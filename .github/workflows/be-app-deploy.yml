@@ -63,7 +63,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: ${{ inputs.webAppName }}
-        path: be-app
+        path: .
 
     - name: Get publish Profile
       id: publish-profile

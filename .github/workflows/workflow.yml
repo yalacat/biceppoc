@@ -39,7 +39,7 @@ jobs:
       resourceGroupName: sub-nprd-customapps-01
       nodeVersion: 18.x
       webAppName: app-be-eus-dev-tiq-01
-      pathOfWebApp: .
+      pathOfWebApp: ./be-app
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}

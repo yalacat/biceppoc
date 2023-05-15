@@ -79,8 +79,8 @@ jobs:
     - name: Download artifact from build job
       uses: actions/download-artifact@v3
       with:
-        name: be-app
-
+        name: ${{ inputs.webAppName }}
+        
         # deploy web app using Azure credentials
     - name: Run Azure webapp deploy action using publish profile credentials
       uses: azure/webapps-deploy@v2

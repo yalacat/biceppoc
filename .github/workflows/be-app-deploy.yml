@@ -37,7 +37,7 @@ jobs:
     steps:
      # checkout the repo
     - name: 'Checkout GitHub Action' 
-      uses: actions/checkout@main
+      uses: actions/checkout@v2
    
     - uses: azure/login@v1
       with:
@@ -55,24 +55,47 @@ jobs:
     - name: npm install, build
       run: |
         npm install
+      working-directory: be-app
+    
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
       with:
-          name: ${{ inputs.webAppName }}
-          path: ${{ inputs.pathOfWebApp }}
+        name: ${{ inputs.webAppName }}
+        path: be-app
 
-  deploy: 
-    runs-on: ubuntu-latest
+    - name: Get publish Profile
+      id: publish-profile
+      shell: pwsh
+      run: |
+          $profile = Get-AzWebAppPublishingProfile `
+              -ResourceGroupName ${{ secrets.RESOURCE_GROUP_NAME }} `
+              -Name ${{ inputs.webAppName }}
+          $profile = $profile.Replace("`r", "").Replace("`n", "")
+          ::set-output name=publish-prof::$profile         
 
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{ inputs.webAppName }}
+        # deploy web app using Azure credentials
+    - name: Run Azure webapp deploy action using publish profile credentials
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ inputs.webAppName }}
+        publish-profile: ${{steps.publish-profile.outputs.publish-prof}}
+        images: 
+     
 
-          # deploy web app using Azure credentials
-      - name: Deploy to web app
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ inputs.webAppName }}
-          package: ${{ inputs.pathOfWebApp }}
+  # deploy: 
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+    
+  #   - name: Download artifact from build job
+  #     uses: actions/download-artifact@v2
+  #     with:
+  #       name: ${{ inputs.webAppName }}
+
+  #         # deploy web app using Azure credentials
+  #   - name: Download artifact from build job
+  #     uses: azure/webapps-deploy@v2
+  #     with:
+  #       app-name: ${{ inputs.webAppName }}
+  #       package: ${{ inputs.pathOfWebApp }}
+  #       publish-profile: ${{ secrets.AzureAppService_PublishProfile_f6178814250d4a54ab3be7602a27d6ac }} 

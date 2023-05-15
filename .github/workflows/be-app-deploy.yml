@@ -81,9 +81,7 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ inputs.webAppName }}
-        publish-profile: ${{steps.publish-profile.outputs.pubprofile}}
-        images: 
-     
+        publish-profile: ${{steps.publish-profile.outputs.pubprofile}}     
 
   # deploy: 
   #   runs-on: ubuntu-latest

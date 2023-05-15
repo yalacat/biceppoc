@@ -19,7 +19,7 @@ jobs:
     uses: ./.github/workflows/lint.yml
 
   # Deploy to the dev environment.
-  deploy-test:
+  deploy-dev:
     uses: ./.github/workflows/deploy.yml
     needs: lint
     with:
@@ -33,11 +33,11 @@ jobs:
 # deploy the backend nodejs app
   deploy-be-app:
     uses: ./.github/workflows/be-app-deploy.yml
-    needs: deploy-test
+    needs: deploy-dev
     with:
       environmentType: dev
       resourceGroupName: sub-nprd-customapps-01
-      nodeVersion: 18.16.0
+      nodeVersion: 18.x
       webAppName: app-be-eus-dev-tiq-01
       pathOfWebApp: .
     secrets:

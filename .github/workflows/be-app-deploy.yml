@@ -67,13 +67,15 @@ jobs:
 
     - name: Get publish Profile
       id: publish-profile
-      shell: pwsh
-      run: |
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
           $profile = Get-AzWebAppPublishingProfile 
-              -ResourceGroupName ${{ inputs.resourceGroupName }} 
+              -ResourceGroupName ${{ inputs.resourceGroupName }}
               -Name ${{ inputs.webAppName }}
           $profile = $profile.Replace("`r", "").Replace("`n", "")
-          ::set-output name=publish-prof::$profile         
+          ::set-output name=publish-prof::$profile       
+        azPSVersion: latest 
 
         # deploy web app using Azure credentials
     - name: Run Azure webapp deploy action using publish profile credentials

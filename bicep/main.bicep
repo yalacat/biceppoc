@@ -141,6 +141,10 @@ resource appServiceBackEndApp 'Microsoft.Web/sites@2022-09-01' = {
 resource functionApp 'Microsoft.Web/sites@2022-09-01' = {
   name: functionAppName
   location: location
+  properties: {
+    serverFarmId: appServicePlan.id
+    httpsOnly: true
+  } 
 }
 
 // resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {

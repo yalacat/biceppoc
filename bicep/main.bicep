@@ -16,11 +16,12 @@ param environmentType string
 var appServiceFrontEndAppName = 'app-fe-eus-${environmentType}-tiq-01'
 var appServiceBackEndAppName = 'app-be-eus-${environmentType}-tiq-01'
 var appServicePlanName = 'plan-customapps'
+var functionServicePlanName = 'plan-azure-funcions'
 // var apiGatewayName = 'agw-customapps'
 // var azureServiceBusName = 'sb-customapps-eus-${environmentType}-tiq-01'
 // var customAppsVnetName = 'vnet-customapps'
 var functionAppName = 'func-eus-dev-01'
-// var storageAccountName = 'steus${environmentType}'
+var storageAccountName = 'steus${environmentType}'
 // var logAnalyticsWorkspaceName = 'log-${resourceNameSuffix}'
 // var applicationInsightsName = 'appi-customapps'
 
@@ -138,14 +139,45 @@ resource appServiceBackEndApp 'Microsoft.Web/sites@2022-09-01' = {
 //   }
 // }
 
+resource functionHostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
+  name: functionServicePlanName
+  location: location
+  sku: {
+    name: 'Y1'
+    tier: 'Dynamic'
+    size: 'Y1'
+    family: 'Y'
+    capacity: 0
+  }
+  properties: {
+    computeMode: 'Dynamic'
+    reserved: true
+  }
+}
+
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
+  name: storageAccountName
+  location: location
+  kind: 'StorageV2'
+  sku: environmentConfigurationMap[environmentType].storageAccount.sku
+}
+
 resource functionApp 'Microsoft.Web/sites@2022-09-01' = {
   name: functionAppName
   location: location
   properties: {
-    serverFarmId: appServicePlan.id
+    serverFarmId: functionHostingPlan.id
     httpsOnly: true
+    siteConfig: {
+      linuxFxVersion: 'node|18'
+      appSettings: [
+        {
+          name: 'AzureWebJobsStorage'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
+        }
+      ]
   } 
-  kind:'functionapp'
+  kind: 'functionapp,linux'
 }
 
 // resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
@@ -165,11 +197,6 @@ resource functionApp 'Microsoft.Web/sites@2022-09-01' = {
 //   }
 // }
 
-// resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
-//   name: storageAccountName
-//   location: location
-//   kind: 'StorageV2'
-//   sku: environmentConfigurationMap[environmentType].storageAccount.sku
-// }
+
 
 //output appServiceAppHostName string = appServiceApp.properties.defaultHostName

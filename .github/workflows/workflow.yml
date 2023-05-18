@@ -18,8 +18,8 @@ jobs:
   lint:
     uses: ./.github/workflows/lint.yml
 
-  # Deploy to the dev environment.
-  deploy-dev:
+  # Deploy Azure resources using a bicep file/
+  deploy-azure-resources:
     uses: ./.github/workflows/deploy.yml
     needs: lint
     with:
@@ -33,13 +33,28 @@ jobs:
 # deploy the backend nodejs app
   deploy-be-app:
     uses: ./.github/workflows/be-app-deploy.yml
-    needs: deploy-dev
+    needs: deploy-azure-resources
     with:
       environmentType: dev
       resourceGroupName: sub-nprd-customapps-01
       nodeVersion: 18.x
       webAppName: app-be-eus-dev-tiq-01
       pathOfWebApp: ./be-app
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+# deploy the backend nodejs app
+  deploy-azuure-function:
+    uses: ./.github/workflows/func-app-deploy.yml
+    needs: deploy-azure-resources
+    with:
+      environmentType: dev
+      resourceGroupName: sub-nprd-customapps-01
+      nodeVersion: 18.x
+      funcAppName: app-be-eus-dev-tiq-01
+      packagePath: ./azure-func
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}

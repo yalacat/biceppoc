@@ -19,7 +19,7 @@ var appServicePlanName = 'plan-customapps'
 // var apiGatewayName = 'agw-customapps'
 // var azureServiceBusName = 'sb-customapps-eus-${environmentType}-tiq-01'
 // var customAppsVnetName = 'vnet-customapps'
-// var functionAppName = 'func-customapps'
+var functionAppName = 'func-customapps'
 // var storageAccountName = 'steus${environmentType}'
 // var logAnalyticsWorkspaceName = 'log-${resourceNameSuffix}'
 // var applicationInsightsName = 'appi-customapps'
@@ -138,10 +138,10 @@ resource appServiceBackEndApp 'Microsoft.Web/sites@2022-09-01' = {
 //   }
 // }
 
-// resource functionApp 'Microsoft.Web/sites@2022-09-01'={
-//   name: functionAppName
-//   location: location
-// }
+resource functionApp 'Microsoft.Web/sites@2022-09-01' = {
+  name: functionAppName
+  location: location
+}
 
 // resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
 //   name: logAnalyticsWorkspaceName

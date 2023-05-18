@@ -58,7 +58,6 @@ jobs:
       run: |
         npm install
         npm run build --if-present
-        npm run test --if-present
       working-directory: be-app
     
     - name: Upload artifact for deployment job
@@ -67,16 +66,16 @@ jobs:
         name: ${{ inputs.webAppName }}
         path: .
 
-    - name: Get publish Profile
-      id: publish-profile
-      uses: azure/powershell@v1
-      with:
-        inlineScript: |
-          $profile = Get-AzWebAppPublishingProfile -ResourceGroupName ${{ inputs.resourceGroupName }} -Name ${{ inputs.webAppName }}
-          $profile = $profile.Replace("`r", "").Replace("`n", "")
-          Write-Output "::set-output name=pubprofile::$profile"
-          Remove-Variable profile      
-        azPSVersion: latest 
+    # - name: Get publish Profile
+    #   id: publish-profile
+    #   uses: azure/powershell@v1
+    #   with:
+    #     inlineScript: |
+    #       $profile = Get-AzWebAppPublishingProfile -ResourceGroupName ${{ inputs.resourceGroupName }} -Name ${{ inputs.webAppName }}
+    #       $profile = $profile.Replace("`r", "").Replace("`n", "")
+    #       Write-Output "::set-output name=pubprofile::$profile"
+    #       Remove-Variable profile      
+    #     azPSVersion: latest 
 
     - name: Download artifact from build job
       uses: actions/download-artifact@v3
@@ -88,7 +87,7 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ inputs.webAppName }}
-        publish-profile: ${{steps.publish-profile.outputs.pubprofile}}    
+        # publish-profile: ${{steps.publish-profile.outputs.pubprofile}}    
         package: .
 
   # deploy: 

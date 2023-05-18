@@ -1,0 +1,61 @@
+name: Deploy Node.js project to function app
+
+on:
+    workflow_call:
+      inputs:
+        environmentType:
+          required: true
+          type: string
+        resourceGroupName:
+          required: true
+          type: string
+        nodeVersion:
+          required: true
+          type: string
+        funcAppName:
+          required: true
+          type: string
+        packagePath:
+          required: true
+          type: string
+      secrets:
+        AZURE_CLIENT_ID:
+          required: true
+        AZURE_TENANT_ID:
+          required: true
+        AZURE_SUBSCRIPTION_ID:
+          required: true
+  
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'Checkout GitHub action'
+      uses: actions/checkout@v2
+
+    - name: Sign in to Azure
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Setup Node ${{ inputs.nodeVersion }} Environment
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ inputs.nodeVersion }}
+
+    - name: 'Resolve Project Dependencies Using Npm'
+      shell: bash
+      run: |
+        pushd './${{ inputs.packagePath }}'
+        npm install
+        npm run build --if-present
+        npm run test --if-present
+        popd
+    - name: 'Run Azure Functions action'
+      uses: Azure/functions-action@v1
+      with:
+        app-name: ${{ inputs.funcAppName }}
+        package: ${{ inputs.packagePath }}
+        # publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}

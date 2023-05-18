@@ -57,6 +57,8 @@ jobs:
     - name: npm install, build
       run: |
         npm install
+        npm run build --if-present
+        npm run test --if-present
       working-directory: be-app
     
     - name: Upload artifact for deployment job

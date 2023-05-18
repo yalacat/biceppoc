@@ -164,6 +164,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
 resource functionApp 'Microsoft.Web/sites@2022-09-01' = {
   name: functionAppName
   location: location
+  kind: 'functionapp,linux'
   properties: {
     serverFarmId: functionHostingPlan.id
     httpsOnly: true
@@ -175,8 +176,8 @@ resource functionApp 'Microsoft.Web/sites@2022-09-01' = {
           value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
         }
       ]
-  } 
-  kind: 'functionapp,linux'
+    }
+  }
 }
 
 // resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {

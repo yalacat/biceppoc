@@ -53,7 +53,7 @@ jobs:
       environmentType: dev
       resourceGroupName: sub-nprd-customapps-01
       nodeVersion: 18.x
-      funcAppName: app-be-eus-dev-tiq-01
+      funcAppName: func-eus-dev-01
       packagePath: ./azure-func
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}

@@ -172,8 +172,6 @@ resource appServiceBackEndApp 'Microsoft.Web/sites@2022-09-01' = {
 //   }
 // }
 
-
-
 resource functionApp 'Microsoft.Web/sites@2022-09-01' = {
   name: functionAppName
   location: location
@@ -217,7 +215,5 @@ resource functionApp 'Microsoft.Web/sites@2022-09-01' = {
 //     WorkspaceResourceId: logAnalyticsWorkspace.id
 //   }
 // }
-
-
 
 //output appServiceAppHostName string = appServiceApp.properties.defaultHostName

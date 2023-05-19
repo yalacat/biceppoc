@@ -75,7 +75,7 @@ jobs:
     - uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ inputs.webAppName }}
-        package: .
+        package: be-app
 
 
         # deploy web app using Azure credentials

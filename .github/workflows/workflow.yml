@@ -59,7 +59,22 @@ jobs:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
- 
+
+# deploy the backend nodejs app
+  deploy-fe-app:
+    uses: ./.github/workflows/fe-app-deploy.yml
+    needs: deploy-azure-resources
+    with:
+      environmentType: dev
+      resourceGroupName: sub-nprd-customapps-01
+      nodeVersion: 18.x
+      webAppName: app-fe-eus-dev-tiq-01
+      pathOfWebApp: ./fe-app
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}      
+
       # Deploy to the production environment.
   # deploy-production:
   #   uses: ./.github/workflows/deploy.yml

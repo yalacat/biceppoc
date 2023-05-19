@@ -1,0 +1,67 @@
+name: fe-app-deploy
+
+on:
+  workflow_call:
+    inputs:
+      environmentType:
+        required: true
+        type: string
+      resourceGroupName:
+        required: true
+        type: string
+      nodeVersion:
+        required: true
+        type: string
+      webAppName:
+        required: true
+        type: string
+      pathOfWebApp:
+        required: true
+        type: string
+    secrets:
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+     # checkout the repo
+    - name: 'Checkout GitHub Action' 
+      uses: actions/checkout@v2
+   
+    - name: Sign in to Azure
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        enable-AzPSSession: true 
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: fe-app/package-lock.json
+
+    - name: npm install, build
+      run: |
+        npm install
+        npm run build --if-present
+      working-directory: fe-app
+ 
+        # deploy web app using Azure credentials
+    - uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ inputs.webAppName }}
+        package: fe-app

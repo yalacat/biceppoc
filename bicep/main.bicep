@@ -13,7 +13,7 @@ param environmentType string
 // param resourceNameSuffix string = uniqueString(resourceGroup().id)
 
 // Define the names for resources.
-var appServiceFrontEndAppName = 'app-fe-eus-${environmentType}-tiq-01'
+//var appServiceFrontEndAppName = 'app-fe-eus-${environmentType}-tiq-01'
 var appServiceBackEndAppName = 'app-be-eus-${environmentType}-tiq-01'
 var appServicePlanName = 'plan-customapps'
 var functionServicePlanName = 'plan-azure-funcions'
@@ -57,37 +57,43 @@ var environmentConfigurationMap = {
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: appServicePlanName
   location: location
-  sku: environmentConfigurationMap[environmentType].appServicePlan.sku
   kind: 'linux'
+  sku: {
+    name: 'Y1'
+    tier: 'Dynamic'
+    size: 'Y1'
+    family: 'Y'
+    capacity: 0
+  }
   properties: {
     reserved: true
   }
 }
 
-resource appServiceFrontEndApp 'Microsoft.Web/sites@2022-09-01' = {
-  name: appServiceFrontEndAppName
-  location: location
-  kind: 'app'
-  properties: {
-    serverFarmId: appServicePlan.id
-    httpsOnly: true
-    siteConfig: {
-      linuxFxVersion: 'node|18'
-    }
-    // siteConfig: {
-    //   appSettings: [
-    //     {
-    //       name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-    //       value: applicationInsights.properties.InstrumentationKey
-    //     }
-    //     {
-    //       name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-    //       value: applicationInsights.properties.ConnectionString
-    //     }       
-    //   ]
-    // }
-  }
-}
+// resource appServiceFrontEndApp 'Microsoft.Web/sites@2022-09-01' = {
+//   name: appServiceFrontEndAppName
+//   location: location
+//   kind: 'app'
+//   properties: {
+//     serverFarmId: appServicePlan.id
+//     httpsOnly: true
+//     siteConfig: {
+//       linuxFxVersion: 'node|18'
+//     }
+//     // siteConfig: {
+//     //   appSettings: [
+//     //     {
+//     //       name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+//     //       value: applicationInsights.properties.InstrumentationKey
+//     //     }
+//     //     {
+//     //       name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+//     //       value: applicationInsights.properties.ConnectionString
+//     //     }       
+//     //   ]
+//     // }
+//   }
+// }
 
 resource appServiceBackEndApp 'Microsoft.Web/sites@2022-09-01' = {
   name: appServiceBackEndAppName

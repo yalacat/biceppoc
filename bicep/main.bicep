@@ -59,6 +59,9 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   location: location
   sku: environmentConfigurationMap[environmentType].appServicePlan.sku
   kind: 'linux'
+  properties: {
+    reserved: true
+  }
 }
 
 resource appServiceFrontEndApp 'Microsoft.Web/sites@2022-09-01' = {

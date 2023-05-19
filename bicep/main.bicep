@@ -15,8 +15,8 @@ param environmentType string
 // Define the names for resources.
 //var appServiceFrontEndAppName = 'app-fe-eus-${environmentType}-tiq-01'
 var appServiceBackEndAppName = 'app-be-eus-${environmentType}-tiq-01'
-//var appServicePlanName = 'plan-customapps'
-var functionServicePlanName = 'plan-azure-funcions'
+var appServicePlanName = 'plan-customapps'
+//var functionServicePlanName = 'plan-azure-funcions'
 // var apiGatewayName = 'agw-customapps'
 // var azureServiceBusName = 'sb-customapps-eus-${environmentType}-tiq-01'
 // var customAppsVnetName = 'vnet-customapps'
@@ -90,7 +90,7 @@ var environmentConfigurationMap = {
 // }
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: functionServicePlanName
+  name: appServicePlanName
   location: location
   sku: {
     name: 'Y1'

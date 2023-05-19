@@ -13,7 +13,7 @@ param environmentType string
 // param resourceNameSuffix string = uniqueString(resourceGroup().id)
 
 // Define the names for resources.
-//var appServiceFrontEndAppName = 'app-fe-eus-${environmentType}-tiq-01'
+var appServiceFrontEndAppName = 'app-fe-eus-${environmentType}-tiq-01'
 var appServiceBackEndAppName = 'app-be-eus-${environmentType}-tiq-01'
 var appServicePlanName = 'plan-customapps'
 var functionServicePlanName = 'plan-azure-funcions'
@@ -113,6 +113,30 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
 
 resource appServiceBackEndApp 'Microsoft.Web/sites@2022-09-01' = {
   name: appServiceBackEndAppName
+  location: location
+  properties: {
+    serverFarmId: appServicePlan.id
+    httpsOnly: true
+    siteConfig: {
+      linuxFxVersion: 'node|18'
+    }
+    // siteConfig: {
+    //   appSettings: [
+    //     {
+    //       name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+    //       value: applicationInsights.properties.InstrumentationKey
+    //     }
+    //     {
+    //       name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+    //       value: applicationInsights.properties.ConnectionString
+    //     }       
+    //   ]
+    // }
+  }
+}
+
+resource appServiceFrontEndApp 'Microsoft.Web/sites@2022-09-01' = {
+  name: appServiceFrontEndAppName
   location: location
   properties: {
     serverFarmId: appServicePlan.id

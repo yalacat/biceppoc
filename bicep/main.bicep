@@ -16,7 +16,7 @@ param environmentType string
 //var appServiceFrontEndAppName = 'app-fe-eus-${environmentType}-tiq-01'
 var appServiceBackEndAppName = 'app-be-eus-${environmentType}-tiq-01'
 var appServicePlanName = 'plan-customapps'
-//var functionServicePlanName = 'plan-azure-funcions'
+var functionServicePlanName = 'plan-azure-funcions'
 // var apiGatewayName = 'agw-customapps'
 // var azureServiceBusName = 'sb-customapps-eus-${environmentType}-tiq-01'
 // var customAppsVnetName = 'vnet-customapps'
@@ -54,15 +54,15 @@ var environmentConfigurationMap = {
   }
 }
 
-// resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
-//   name: appServicePlanName
-//   location: location
-//   sku: environmentConfigurationMap[environmentType].appServicePlan.sku
-//   kind: 'linux'
-//   // properties: {
-//   //   reserved: true
-//   // }
-// }
+resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
+  name: appServicePlanName
+  location: location
+  sku: environmentConfigurationMap[environmentType].appServicePlan.sku
+  kind: 'linux'
+  properties: {
+    reserved: true
+  }
+}
 
 // resource appServiceFrontEndApp 'Microsoft.Web/sites@2022-09-01' = {
 //   name: appServiceFrontEndAppName
@@ -90,7 +90,7 @@ var environmentConfigurationMap = {
 // }
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: appServicePlanName
+  name: functionServicePlanName
   location: location
   sku: {
     name: 'Y1'
@@ -114,9 +114,8 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
 resource appServiceBackEndApp 'Microsoft.Web/sites@2022-09-01' = {
   name: appServiceBackEndAppName
   location: location
-  kind: 'app,linux'
   properties: {
-    serverFarmId: hostingPlan.id
+    serverFarmId: appServicePlan.id
     httpsOnly: true
     siteConfig: {
       linuxFxVersion: 'node|18'

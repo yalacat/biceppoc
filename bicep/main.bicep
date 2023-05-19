@@ -54,15 +54,15 @@ var environmentConfigurationMap = {
   }
 }
 
-resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: appServicePlanName
-  location: location
-  sku: environmentConfigurationMap[environmentType].appServicePlan.sku
-  kind: 'linux'
-  // properties: {
-  //   reserved: true
-  // }
-}
+// resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
+//   name: appServicePlanName
+//   location: location
+//   sku: environmentConfigurationMap[environmentType].appServicePlan.sku
+//   kind: 'linux'
+//   // properties: {
+//   //   reserved: true
+//   // }
+// }
 
 // resource appServiceFrontEndApp 'Microsoft.Web/sites@2022-09-01' = {
 //   name: appServiceFrontEndAppName
@@ -89,12 +89,34 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
 //   }
 // }
 
+resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
+  name: functionServicePlanName
+  location: location
+  sku: {
+    name: 'Y1'
+    tier: 'Dynamic'
+    size: 'Y1'
+    family: 'Y'
+    capacity: 0
+  }
+  properties: {
+    reserved: true
+  }
+}
+
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
+  name: storageAccountName
+  location: location
+  kind: 'StorageV2'
+  sku: environmentConfigurationMap[environmentType].storageAccount.sku
+}
+
 resource appServiceBackEndApp 'Microsoft.Web/sites@2022-09-01' = {
   name: appServiceBackEndAppName
   location: location
-  kind: 'app'
+  kind: 'app,linux'
   properties: {
-    serverFarmId: appServicePlan.id
+    serverFarmId: hostingPlan.id
     httpsOnly: true
     siteConfig: {
       linuxFxVersion: 'node|18'
@@ -151,34 +173,14 @@ resource appServiceBackEndApp 'Microsoft.Web/sites@2022-09-01' = {
 //   }
 // }
 
-resource functionHostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: functionServicePlanName
-  location: location
-  sku: {
-    name: 'Y1'
-    tier: 'Dynamic'
-    size: 'Y1'
-    family: 'Y'
-    capacity: 0
-  }
-  properties: {
-    reserved: true
-  }
-}
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
-  name: storageAccountName
-  location: location
-  kind: 'StorageV2'
-  sku: environmentConfigurationMap[environmentType].storageAccount.sku
-}
 
 resource functionApp 'Microsoft.Web/sites@2022-09-01' = {
   name: functionAppName
   location: location
   kind: 'functionapp,linux'
   properties: {
-    serverFarmId: functionHostingPlan.id
+    serverFarmId: hostingPlan.id
     httpsOnly: true
     siteConfig: {
       linuxFxVersion: 'node|18'

@@ -58,6 +58,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: appServicePlanName
   location: location
   sku: environmentConfigurationMap[environmentType].appServicePlan.sku
+  kind: 'linux'
 }
 
 resource appServiceFrontEndApp 'Microsoft.Web/sites@2022-09-01' = {
@@ -84,9 +85,13 @@ resource appServiceFrontEndApp 'Microsoft.Web/sites@2022-09-01' = {
 resource appServiceBackEndApp 'Microsoft.Web/sites@2022-09-01' = {
   name: appServiceBackEndAppName
   location: location
+  kind: 'app'
   properties: {
     serverFarmId: appServicePlan.id
     httpsOnly: true
+    siteConfig: {
+      linuxFxVersion: 'node|18'
+    }
     // siteConfig: {
     //   appSettings: [
     //     {
